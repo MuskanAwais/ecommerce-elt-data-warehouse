@@ -1,0 +1,280 @@
+I actually like this approach much more. 💯
+
+Instead of me giving you the whole project at once, we'll work exactly like a senior Data Engineer mentoring a junior engineer.
+
+**Rule:** One module at a time.
+
+* First, I'll explain **why** we're doing it.
+* Then, **what** we'll build.
+* Then, **how** we'll build it.
+* Then, you'll implement it.
+* We'll test it.
+* We'll commit it to GitHub.
+* Only after it's working will we move to the next module.
+
+This way, by the end, you'll understand every part of the project instead of just following instructions.
+
+---
+
+# Our Project
+
+**E-Commerce ELT Data Warehouse**
+
+---
+
+# Complete Roadmap
+
+This is the roadmap we'll follow throughout the project. Don't worry about the details now—it's just to give you the overall picture.
+
+## Module 0 — Project Planning (Today)
+
+Understand the project, requirements, architecture, tools, and folder structure.
+
+---
+
+## Module 1 — Project Setup
+
+Goal:
+Create a professional project skeleton.
+
+We'll do:
+
+* Create GitHub repository
+* Create project folders
+* Create virtual environment
+* Install dependencies
+* Configure Git
+* Create `.gitignore`
+* Create `README.md`
+
+Deliverable:
+A clean project structure ready for development.
+
+---
+
+## Module 2 — Data Extraction
+
+Goal:
+Extract data from a free e-commerce API.
+
+We'll learn:
+
+* What is a REST API?
+* JSON data
+* GET requests
+* Error handling
+* Logging
+
+We'll build:
+
+* Python extraction scripts
+* Save raw JSON files
+
+Deliverable:
+Raw data stored locally.
+
+---
+
+## Module 3 — Data Lake (Raw Layer)
+
+Goal:
+Organize raw data properly.
+
+We'll learn:
+
+* Why we never modify raw data
+* Data Lake concept
+* Folder organization
+
+We'll create:
+
+```text
+data/
+    raw/
+        customers/
+        products/
+        orders/
+```
+
+Deliverable:
+A proper raw data layer.
+
+---
+
+## Module 4 — Data Warehouse (DuckDB)
+
+Goal:
+Store data in an analytics database.
+
+We'll learn:
+
+* What is a Data Warehouse?
+* Why DuckDB?
+* Loading JSON into DuckDB
+* SQL basics for analytics
+
+We'll create tables for:
+
+* Customers
+* Products
+* Orders
+
+Deliverable:
+Working warehouse with queryable tables.
+
+---
+
+## Module 5 — Data Modeling
+
+This is one of the most important Data Engineering concepts.
+
+We'll learn:
+
+* Fact Tables
+* Dimension Tables
+* Star Schema
+* Primary Keys
+* Foreign Keys
+
+We'll redesign our tables into an analytics-friendly structure.
+
+Deliverable:
+A proper star schema.
+
+---
+
+## Module 6 — dbt
+
+We'll learn:
+
+* Why dbt exists
+* Models
+* Materializations
+* Jinja
+* Data quality tests
+* Documentation
+
+We'll build:
+
+* Staging models
+* Intermediate models
+* Mart models
+
+Deliverable:
+Professional transformation pipeline.
+
+---
+
+## Module 7 — Business Analytics
+
+We'll create business metrics like a real company.
+
+Examples:
+
+* Total Revenue
+* Monthly Revenue
+* Best Selling Products
+* Top Customers
+* Average Order Value
+* Revenue by Category
+
+Deliverable:
+Analytics-ready tables and SQL queries.
+
+---
+
+## Module 8 — Testing
+
+We'll test everything.
+
+Including:
+
+* Data quality
+* Null values
+* Duplicate records
+* Primary key validation
+* dbt tests
+* Python tests
+
+Deliverable:
+Reliable pipeline.
+
+---
+
+## Module 9 — Documentation
+
+We'll create:
+
+* Architecture Diagram
+* README
+* Folder explanations
+* Setup Guide
+* Screenshots
+
+Deliverable:
+A recruiter-friendly GitHub repository.
+
+---
+
+## Module 10 — GitHub
+
+We'll:
+
+* Push code after every module
+* Write meaningful commit messages
+* Organize branches (if needed)
+* Tag a release
+
+Deliverable:
+A professional GitHub portfolio project.
+
+---
+
+# Technologies We'll Use
+
+Everything will be **100% free**.
+
+| Tool                       | Purpose                | Free |
+| -------------------------- | ---------------------- | ---- |
+| Python                     | Extraction & scripting | ✅    |
+| Requests                   | API calls              | ✅    |
+| Pandas                     | Data manipulation      | ✅    |
+| DuckDB                     | Data Warehouse         | ✅    |
+| dbt Core                   | Data transformation    | ✅    |
+| Git                        | Version control        | ✅    |
+| GitHub                     | Code hosting           | ✅    |
+| VS Code                    | Development            | ✅    |
+| Fake Store API / DummyJSON | Mock e-commerce data   | ✅    |
+
+No paid cloud services are required for this version.
+
+---
+
+# What I Expect From You
+
+After each module, you'll send me:
+
+* The folder structure (or a screenshot).
+* The code you wrote.
+* Any errors you encountered.
+* The Git commit message you used.
+
+I'll review everything just like a code reviewer on a real engineering team and suggest improvements before we move on.
+
+---
+
+## One more thing (important)
+
+I want this project to be **interview-level**, not just a tutorial project.
+
+So during every module, I'll also explain:
+
+* **Why** this step exists in real companies.
+* **How** it works in production.
+* **Common interview questions** related to that topic.
+
+For example, when we reach the Data Warehouse module, I won't just tell you how to load data into DuckDB. I'll also explain why companies use data warehouses, how they differ from operational databases, and the kinds of interview questions you can expect on that topic.
+
+This way, you'll finish the project with both a strong GitHub portfolio piece **and** a solid understanding of the underlying Data Engineering concepts.
+
+**Our next message will start with only Module 1 (Project Setup)**. We won't discuss any other module until Module 1 is fully completed and tested.

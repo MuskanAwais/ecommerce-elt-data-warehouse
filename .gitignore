@@ -1,0 +1,50 @@
+# .gitignore for ecommerce-elt-data-warehouse
+# Python artifacts
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+*.pyd
+*.egg
+*.egg-info/
+*.dist-info/
+build/
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+.env
+.env.*
+
+# Data directories (generated / intermediate)
+data/raw/
+data/processed/
+data/warehouse/
+
+# Logs and temporary files
+logs/
+*.log
+
+# Jupyter notebooks
+*.ipynb
+.ipynb_checkpoints/
+
+# DBT artifacts
+target/
+dbt_packages/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# IDE / editor files
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# Miscellaneous
+*.sqlite3
+*.db
