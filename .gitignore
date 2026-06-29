@@ -1,4 +1,5 @@
 # .gitignore for ecommerce-elt-data-warehouse
+
 # Python artifacts
 __pycache__/
 *.py[cod]
@@ -17,11 +18,6 @@ ENV/
 env/
 .env
 .env.*
-
-# Data directories (generated / intermediate)
-data/raw/
-data/processed/
-data/warehouse/
 
 # Logs and temporary files
 logs/
@@ -48,3 +44,9 @@ Thumbs.db
 # Miscellaneous
 *.sqlite3
 *.db
+
+# Ignore this file
+structure.txt
+
+# Ignore generated raw data
+data/raw/
