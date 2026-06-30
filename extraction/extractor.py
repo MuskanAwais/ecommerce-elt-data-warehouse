@@ -8,6 +8,7 @@ import pathlib
 import os
 import datetime
 import requests
+import boto3
 
 from extraction.config import API_ENDPOINTS
 
@@ -40,31 +41,42 @@ def _fetch(entity: str, url: str) -> dict:
         raise
 
 
-# ---------------- STORE ---------------- #
-def _store(entity: str, payload: dict) -> pathlib.Path:
-    """
-    Save JSON response into:
-    data/raw/<entity>/YYYY/MM/DD/<entity>_timestamp.json
-    """
 
+
+# ---------------- STORE ---------------- #
+def _store(entity: str, payload: dict) -> str:
+    """
+    Upload JSON response to S3:
+    s3://<bucket>/raw/<entity>/YYYY/MM/DD/<entity>_timestamp.json
+    """
+    from extraction.config import S3_BUCKET_NAME
+    
     timestamp = datetime.datetime.now(datetime.UTC).strftime("%Y%m%d_%H%M%S")
     date_path = datetime.datetime.now(datetime.UTC).strftime("%Y/%m/%d")
 
-    out_dir = DATA_ROOT / "raw" / entity / date_path
-    out_dir.mkdir(parents=True, exist_ok=True)
+    # The exact path (key) inside the S3 bucket
+    s3_key = f"raw/{entity}/{date_path}/{entity}_{timestamp}.json"
 
-    out_file = out_dir / f"{entity}_{timestamp}.json"
+    # Initialize the S3 client
+    s3_client = boto3.client("s3")
 
-    # WRITE FILE (FIXED)
-    with out_file.open("w", encoding="utf-8") as f:
-        json.dump(payload, f, ensure_ascii=False, indent=2)
+    # Convert the Python dictionary payload to a JSON string
+    json_string = json.dumps(payload, ensure_ascii=False, indent=2)
 
-    # logging count safely
+    # Upload to S3
+    s3_client.put_object(
+        Bucket=S3_BUCKET_NAME,
+        Key=s3_key,
+        Body=json_string,
+        ContentType="application/json"
+    )
+
+    # Count the records for logging
     count = len(payload.get(entity, [])) if isinstance(payload, dict) else 0
+    logger.info("Uploaded %s → s3://%s/%s (records=%s)", entity, S3_BUCKET_NAME, s3_key, count)
 
-    logger.info("Saved %s → %s (records=%s)", entity, out_file, count)
+    return s3_key
 
-    return out_file
 
 
 # ---------------- MAIN PIPELINE ---------------- #
