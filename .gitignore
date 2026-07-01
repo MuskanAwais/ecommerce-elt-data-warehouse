@@ -44,6 +44,7 @@ Thumbs.db
 # Miscellaneous
 *.sqlite3
 *.db
+*.duckdb
 
 # Ignore this file
 structure.txt

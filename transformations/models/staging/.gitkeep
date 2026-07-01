@@ -1,0 +1,2 @@
+# Staging models - direct transformations of raw data
+# These models clean, deduplicate, and type-cast the raw extracted data

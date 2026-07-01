@@ -1,0 +1,31 @@
+# dbt profiles configuration for ecommerce_elt
+# This file is NOT committed to git (it's in .gitignore)
+# 
+# Location: ~/.dbt/profiles.yml or ./config/profiles.yml
+# dbt looks for profiles.yml in this order:
+#   1. The --profiles-dir flag
+#   2. The DBT_PROFILES_DIR environment variable  
+#   3. ~/.dbt/ (the home directory)
+#
+# For this project, we're using DuckDB and storing the warehouse locally.
+
+ecommerce_elt:
+  outputs:
+    # Development environment
+    dev:
+      type: duckdb
+      path: 'data/warehouse/warehouse.duckdb'
+      threads: 4
+      timeout_seconds: 30
+      schema: main
+      
+    # Production environment  
+    prod:
+      type: duckdb
+      path: 'data/warehouse/warehouse.duckdb'
+      threads: 4
+      timeout_seconds: 30
+      schema: main
+  
+  # Default target to use
+  target: dev
