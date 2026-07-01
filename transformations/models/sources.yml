@@ -1,0 +1,39 @@
+version: 2
+
+sources:
+  - name: raw
+    description: Raw data staging tables loaded from JSON by Module 4 (load_raw.py)
+    database: ""
+    schema: "main"
+    tables:
+      - name: stg_products
+        description: Raw products from DummyJSON API /products endpoint
+        columns:
+          - name: id
+            description: Unique product identifier
+          - name: title
+            description: Product name/title
+          - name: price
+            description: Product price in USD
+          - name: stock
+            description: Quantity available in stock
+
+      - name: stg_orders
+        description: Raw orders/carts from DummyJSON API /carts endpoint
+        columns:
+          - name: id
+            description: Unique order/cart identifier
+          - name: user_id
+            description: Foreign key to customer
+          - name: total
+            description: Total order value before discount
+
+      - name: stg_customers
+        description: Raw customers from DummyJSON API /users endpoint
+        columns:
+          - name: id
+            description: Unique customer identifier
+          - name: email
+            description: Customer email address
+          - name: name
+            description: Customer full name

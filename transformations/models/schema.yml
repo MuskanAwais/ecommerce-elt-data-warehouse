@@ -1,0 +1,136 @@
+version: 2
+
+models:
+  # STAGING MODELS
+  - name: stg_products
+    description: Cleaned and standardized products from raw data
+    columns:
+      - name: product_id
+        description: Primary key
+        tests:
+          - not_null
+          - unique
+
+  - name: stg_orders
+    description: Cleaned and standardized orders from raw data
+    columns:
+      - name: order_id
+        description: Primary key
+        tests:
+          - not_null
+          - unique
+      - name: customer_id
+        description: Foreign key to customer
+
+  - name: stg_customers
+    description: Cleaned and standardized customers from raw data
+    columns:
+      - name: customer_id
+        description: Primary key
+        tests:
+          - not_null
+          - unique
+      - name: email
+        description: Customer email
+        tests:
+          - not_null
+
+  # DIMENSION MODELS
+  - name: dim_product
+    description: Product dimension with business attributes and surrogate key
+    columns:
+      - name: product_key
+        description: Surrogate key (hashed primary key)
+        tests:
+          - not_null
+          - unique
+      - name: product_id
+        description: Business key to source system
+        tests:
+          - not_null
+          - unique
+      - name: category
+        description: Product category
+        tests:
+          - not_null
+      - name: price
+        description: Product price
+        tests:
+          - not_null
+
+  - name: dim_customer
+    description: Customer dimension with business attributes and surrogate key
+    columns:
+      - name: customer_key
+        description: Surrogate key (hashed primary key)
+        tests:
+          - not_null
+          - unique
+      - name: customer_id
+        description: Business key to source system
+        tests:
+          - not_null
+          - unique
+      - name: email
+        description: Customer email
+        tests:
+          - not_null
+          - unique
+
+  # FACT MODELS
+  - name: fact_orders
+    description: Order facts with dimensions and calculated metrics
+    columns:
+      - name: order_key
+        description: Surrogate key for orders
+        tests:
+          - not_null
+          - unique
+      - name: order_id
+        description: Business key to source system
+        tests:
+          - not_null
+          - unique
+      - name: customer_key
+        description: Foreign key to dim_customer
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_customer')
+                field: customer_key
+      - name: total
+        description: Order total before discount
+        tests:
+          - not_null
+
+  # ANALYTICS MODELS
+  - name: mtd_revenue
+    description: Month-to-date revenue metrics and aggregations
+    columns:
+      - name: month
+        description: Month date
+        tests:
+          - not_null
+      - name: total_orders
+        description: Number of orders in the month
+        tests:
+          - not_null
+      - name: net_revenue
+        description: Net revenue after discounts
+        tests:
+          - not_null
+
+  - name: customer_churn
+    description: Customer churn and status analysis
+    columns:
+      - name: customer_key
+        description: Foreign key to dim_customer
+        tests:
+          - not_null
+      - name: customer_status
+        description: Customer lifecycle status
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['Active', 'At Risk', 'Churned', 'Never Purchased']
