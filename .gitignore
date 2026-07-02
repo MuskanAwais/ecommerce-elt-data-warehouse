@@ -16,8 +16,6 @@ build/
 venv/
 ENV/
 env/
-.env
-.env.*
 
 # Logs and pipeline results
 results/**
@@ -40,7 +38,6 @@ Thumbs.db
 
 # IDE / editor files
 .idea/
-.vscode/
 *.sublime-project
 *.sublime-workspace
 
@@ -60,3 +57,5 @@ Data/warehouse/**/*
 # Test cache
 .pytest_cache/
 config/.user.yml
+config.bat
+node_modules

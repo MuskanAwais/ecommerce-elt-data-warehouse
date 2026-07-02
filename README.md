@@ -13,7 +13,7 @@ Python · DuckDB · dbt · AWS S3 · DummyJSON API
 ├── Data/                     # Raw JSON + DuckDB warehouse (local, gitignored)
 ├── results/                  # Pipeline logs and dbt artifacts (gitignored)
 ├── tests/                    # pytest suite
-├── Documents/                # Documentation and planning specs
+├── .planning/                # SDD, specs, master plan, revision guide
 ├── orchestration_pipeline.py # Run the full pipeline with one command
 ├── config/profiles.yml       # dbt DuckDB connection
 └── run_dbt.ps1               # dbt helper script
@@ -30,7 +30,7 @@ python -m venv .venv
 pip install -r requirements.txt
 ```
 
-Create a `.env` file at the repo root with your AWS credentials (see [Documents/revision.md](Documents/revision.md#environment-variables)).
+Create a `.env` file at the repo root with your AWS credentials (see [.planning/revision.md](.planning/revision.md#environment-variables)).
 
 ### Run the full pipeline
 
@@ -51,8 +51,9 @@ pytest
 
 | Document | Description |
 |---|---|
-| [Documents/revision.md](Documents/revision.md) | Full guide: concepts, architecture, workflow, testing, expected output |
-| [Documents/planning/master_plan.md](Documents/planning/master_plan.md) | Module roadmap and completion tracker |
+| [.planning/revision.md](.planning/revision.md) | Full guide: concepts, architecture, workflow, testing, expected output |
+| [.planning/master_plan.md](.planning/master_plan.md) | Module roadmap and completion tracker |
+| [.planning/SDD.md](.planning/SDD.md) | Spec-driven design document (modules 0–9) |
 | [CONTRIBUTING.md](CONTRIBUTING.md) | Development workflow and coding standards |
 
 ## License
