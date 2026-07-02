@@ -13,6 +13,7 @@ select distinct
     cart.total,
     cart.discountedTotal,
     cart.totalProducts,
-    cart.totalQuantity
+    cart.totalQuantity,
+    current_date as order_date
 from {{ source('raw','stg_orders') }}
 cross join unnest(carts) as t(cart)

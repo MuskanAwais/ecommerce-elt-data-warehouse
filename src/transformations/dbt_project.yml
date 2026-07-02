@@ -15,7 +15,12 @@ seed-paths: ["seeds"]
 macro-paths: ["macros"]
 snapshot-paths: ["snapshots"]
 
-target-path: "target"  # directory which will store compiled SQL files
+target-path: "../../results/dbt"  # directory which will store compiled SQL files
+log-path: "../../results/logs"
+
+clean-targets:
+  - "../../results/dbt"
+  - "dbt_packages"
 
 # Configuring models
 # Full documentation: https://docs.getdbt.com/docs/configuring-models
