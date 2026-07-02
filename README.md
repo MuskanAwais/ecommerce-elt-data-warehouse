@@ -1,93 +1,47 @@
 # ecommerce-elt-data-warehouse
 
-> **A modern, Python‑based ETL data‑warehouse for ecommerce analytics**
+Python ELT pipeline for ecommerce analytics: API extraction, DuckDB warehouse, and dbt transformations.
 
-## Overview
-
-This repository contains a lightweight, extensible data‑pipeline that extracts raw ecommerce data, transforms it, and loads it into a DuckDB‑backed data‑warehouse.  The pipeline is orchestrated with **dbt‑duckdb**, making it easy to version‑control transformations and generate analytical models.
-
-## Directory Structure
+## Project layout
 
 ```
 ecommerce-elt-data-warehouse/
-│
-├─ data/
-│   ├─ raw/           # Original extracts (CSV, JSON, etc.)
-│   ├─ processed/     # Cleaned/intermediate files
-│   └─ warehouse/     # Final parquet / DuckDB files
-│
-├─ extraction/        # Scripts that pull data from source APIs
-├─ transformations/   # dbt models & SQL scripts
-├─ sql/               # Ad‑hoc queries & helper SQL files
-├─ tests/             # Pytest suite for the pipeline
-├─ docs/              # Project documentation & design notes
-├─ config/            # Configuration files (e.g., .env.example)
-├─ logs/              # Runtime logs
-└─ notebooks/         # Exploration notebooks
+├── src/              # Application source code (Python, dbt, SQL)
+├── Data/             # Raw, processed, and warehouse data files
+├── results/          # Pipeline outputs (dbt artifacts, logs)
+├── tests/            # Pytest suite
+├── Documents/        # Project documentation (.md, specs, guides)
+├── config/           # dbt profiles and environment config
+├── requirements.txt
+└── pytest.ini
 ```
 
-## Quick Start
+Full setup instructions and architecture notes are in [Documents/README.md](Documents/README.md) and [Documents/architecture.md](Documents/architecture.md).
 
-1. **Clone the repo**
-   ```bash
-   git clone <repo‑url>
-   cd ecommerce-elt-data-warehouse
-   ```
+See [CONTRIBUTING.md](CONTRIBUTING.md) for development workflow and coding standards.
 
-2. **Create a virtual environment**
-   ```bash
-   python -m venv .venv
-   .venv\Scripts\activate   # Windows
-   # source .venv/bin/activate   # macOS/Linux
-   ```
+## Quick start
 
-3. **Install dependencies**
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-4. **Configure environment variables**
-   ```bash
-   cp config/.env.example .env
-   # Edit .env with your API keys / DB paths
-   ```
-
-5. **Run the pipeline**
-   ```bash
-   # Example: extract raw data
-   python extraction/run_extraction.py
-
-   # Transform with dbt
-   dbt run --profiles-dir config
-   ```
-
-6. **Explore the warehouse**
-   ```bash
-   duckdb data/warehouse/warehouse.duckdb
-   ```
-
-## Testing
-
-Run the test suite to ensure the pipeline behaves as expected:
 ```bash
-pytest tests/
+python -m venv .venv
+.venv\Scripts\activate
+pip install -r requirements.txt
+
+# Run the complete ELT pipeline (one command)
+python orchestration_pipeline.py
+
+# Extract raw data (manual)
+cd src && python -m extraction.extractor
+cd src && python -m scripts.load_raw
+
+# Run dbt models (works from repo root — cwd is restored after each run)
+.\run_dbt.ps1 run
+
+# Run tests
+.\run_dbt.ps1 test
+pytest
 ```
-
-## Contributing
-
-Contributions are welcome! Please follow these steps:
-1. Fork the repository.
-2. Create a feature branch (`git checkout -b my-feature`).
-3. Commit your changes with clear messages.
-4. Open a Pull Request targeting `main`.
 
 ## License
 
-This project is licensed under the **MIT License** – see the [LICENSE](LICENSE) file for details.
-
----
-<<<<<<< HEAD
-=======
-
-
->>>>>>> 8caa61f (Update .gitignore to include all project files)
+MIT License — see [Documents/README.md](Documents/README.md) for details.

@@ -19,15 +19,16 @@ env/
 .env
 .env.*
 
-# Logs and temporary files
-logs/
-*.log
+# Logs and pipeline results
+results/**
+!results/logs/
+!results/logs/.gitkeep
 
 # Jupyter notebooks
 *.ipynb
 .ipynb_checkpoints/
 
-# DBT artifacts
+# DBT artifacts (legacy paths)
 target/
 dbt_packages/
 
@@ -46,8 +47,14 @@ Thumbs.db
 *.db
 *.duckdb
 
-# Ignore this file
-structure.txt
+# Generated raw data and local warehouse files
+Data/raw/**/*
+!Data/raw/.gitkeep
+Data/processed/**/*
+!Data/processed/.gitkeep
+Data/warehouse/**/*
+!Data/warehouse/.gitkeep
 
-# Ignore generated raw data
-data/raw/
+# Test cache
+.pytest_cache/
+config/.user.yml

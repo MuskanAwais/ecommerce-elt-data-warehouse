@@ -30,6 +30,13 @@
 - Write `customer_churn.sql` utilizing window functions to determine the days since the customer's last order.
 - Define custom Jinja macros (e.g., `macros/cents_to_dollars.sql`) if currency conversions are necessary.
 - Add robust tests for these analytics tables in `schema.yml`.
+flowchart LR
+    A[fact_orders] --> B[analytics_revenue_daily]
+    A --> C[analytics_customer_metrics]
+    D[dim_customer] --> C
+    B --> E[Module 7: PostgreSQL / BI reports]
+    C --> E
+
 
 ## 6. Deployment Plan
 - **Execution:** Run `dbt run --models analytics+`.
