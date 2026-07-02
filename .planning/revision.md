@@ -133,10 +133,11 @@ ecommerce-elt-data-warehouse/
 │   └── warehouse/              # warehouse.duckdb
 ├── results/                    # Logs + dbt artifacts (not committed)
 ├── tests/                      # pytest suite
-└── Documents/
-    ├── revision.md             # This file
-    ├── planning/               # SDD specs (spec_1 – spec_9)
-    └── SDD_Ecommerce_ELT.md
+└── .planning/
+    ├── SDD.md              # Spec-driven design (modules 0–9)
+    ├── revision.md         # This file
+    ├── master_plan.md      # Roadmap and completion tracker
+    └── spec_1.md – spec_9.md
 ```
 
 ---
@@ -145,7 +146,7 @@ ecommerce-elt-data-warehouse/
 
 | Module | Name | What It Does | Key Files |
 |---|---|---|---|
-| 0 | Planning | SDD, specs, master plan | `Documents/planning/` |
+| 0 | Planning | SDD, specs, master plan | `.planning/` |
 | 1 | Project Setup | Folder layout, config, gitignore | `README.md`, `config/`, `Data/` |
 | 2 | Data Extraction | Fetch JSON from DummyJSON + S3 upload | `src/extraction/` |
 | 3 | Raw Data Storage | Date-partitioned paths local + S3 | `extractor.py` |
@@ -153,7 +154,7 @@ ecommerce-elt-data-warehouse/
 | 5 | Data Modeling | Star schema via dbt | `models/staging/`, `dim/`, `fact/` |
 | 6 | Analytics | Revenue, churn, LTV marts | `models/analytics/`, `schema.yml` |
 | 7 | Reporting | SQL reports + orchestration | `sql/reports/`, `orchestration_pipeline.py` |
-| 8 | Documentation | README + revision guide | `Documents/revision.md` |
+| 8 | Documentation | README + revision guide | `.planning/revision.md` |
 | 9 | GitHub | CONTRIBUTING, issue/PR templates | `.github/`, `CONTRIBUTING.md` |
 
 ---
@@ -384,7 +385,7 @@ Execution Time        : ~40 sec
 
 ## 14. Further Reading
 
-- Module specs: `Documents/planning/spec_1.md` – `spec_9.md`
-- SDD: `Documents/planning/SDD_ECommerce_ELT.md`
-- Master plan: `Documents/planning/master_plan.md`
+- Module specs: `.planning/spec_1.md` – `spec_9.md`
+- SDD: `.planning/SDD.md`
+- Master plan: `.planning/master_plan.md`
 - Contributing: `CONTRIBUTING.md`

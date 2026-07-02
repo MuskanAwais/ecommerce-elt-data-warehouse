@@ -24,7 +24,7 @@ Thank you for contributing to the E-Commerce ELT Data Warehouse project.
 | `Data/` | Raw JSON and DuckDB warehouse (not committed) |
 | `results/` | Pipeline logs and dbt artifacts (not committed) |
 | `tests/` | Pytest unit tests |
-| `Documents/` | Project documentation and planning specs |
+| `.planning/` | SDD, specs, master plan, and revision guide |
 | `config/` | dbt profiles |
 
 ## Development Workflow

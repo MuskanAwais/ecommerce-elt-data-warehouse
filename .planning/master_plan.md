@@ -57,7 +57,7 @@ ecommerce-elt-data-warehouse/
 │   ├── logs/                     # extraction.log, load_raw.log, dbt.log
 │   └── dbt/                      # manifest.json, run_results.json, compiled SQL
 ├── tests/                        # Pytest unit tests
-├── Documents/                    # All documentation (.md, .docx, .pdf)
+├── .planning/                    # All documentation (.md, .docx, .pdf)
 │   └── planning/                 # master_plan.md, SDD, spec_1–spec_9
 ├── config/                       # dbt profiles.yml, local user config
 ├── .github/                      # Issue templates
@@ -81,7 +81,7 @@ The warehouse follows a dimensional modeling approach (Star Schema):
 
 ## 7. Module Completion Tracker
 
-Each module maps to the SDD in `Documents/planning/SDD_ECommerce_ELT.md`. Status is based on the current codebase as of the latest restructure.
+Each module maps to the SDD in `.planning/SDD.md`. Status is based on the current codebase as of the latest restructure.
 
 | Module | Name | Status | Completion |
 |---|---|---|---|
@@ -102,9 +102,9 @@ Each module maps to the SDD in `Documents/planning/SDD_ECommerce_ELT.md`. Status
 | Item | Detail |
 |---|---|
 | **Goal** | Align scope, terminology, and architecture before coding. |
-| **Deliverables** | `Documents/planning/SDD_ECommerce_ELT.md`, `Documents/planning/master_plan.md`, `spec_1.md`–`spec_9.md` |
+| **Deliverables** | `.planning/SDD.md`, `.planning/master_plan.md`, `spec_1.md`–`spec_9.md` |
 | **Expected Output** | Written SDD with module definitions, Definition of Done per module, and Git commit conventions. |
-| **Verify** | Open `Documents/planning/SDD_ECommerce_ELT.md` — all 10 modules documented. |
+| **Verify** | Open `.planning/SDD.md` — all 10 modules documented. |
 | **Status** | ✅ Complete |
 
 ### Module 1 — Project Setup ✅
@@ -114,7 +114,7 @@ Each module maps to the SDD in `Documents/planning/SDD_ECommerce_ELT.md`. Status
 | **Deliverables** | `.gitignore`, `requirements.txt`, `README.md`, `config/`, `Data/` hierarchy, `tests/`, `pytest.ini` |
 | **Expected Output** | `pip install -r requirements.txt` succeeds; folders match Section 5 structure above. |
 | **Verify** | `pytest --collect-only` discovers tests; `git status` excludes `.venv`, `Data/raw/`, `results/`. |
-| **Status** | ✅ Complete — restructured to `src/`, `Data/`, `results/`, `Documents/`. |
+| **Status** | ✅ Complete — restructured to `src/`, `Data/`, `results/`, `.planning/`. |
 
 ### Module 2 — Data Extraction ✅
 | Item | Detail |
@@ -176,9 +176,9 @@ Each module maps to the SDD in `Documents/planning/SDD_ECommerce_ELT.md`. Status
 | Item | Detail |
 |---|---|
 | **Goal** | Single source of truth for contributors and evaluators. |
-| **Deliverables** | `README.md`, `Documents/revision.md`, `Documents/planning/master_plan.md`, `CONTRIBUTING.md` |
+| **Deliverables** | `README.md`, `.planning/revision.md`, `.planning/master_plan.md`, `CONTRIBUTING.md` |
 | **Expected Output** | GitHub README renders; revision guide covers architecture, workflow, and expected pipeline output. |
-| **Verify** | Review `README.md` and `Documents/revision.md`. |
+| **Verify** | Review `README.md` and `.planning/revision.md`. |
 | **Status** | ✅ Complete |
 
 ### Module 9 — GitHub Finalization ✅
@@ -198,7 +198,7 @@ Each module maps to the SDD in `Documents/planning/SDD_ECommerce_ELT.md`. Status
 ### Phase 1: Planning and Setup ✅
 - **Objective**: Establish project foundation and architecture.
 - **Tasks**: Master plan, Git repo, folder structure, mock API endpoints.
-- **Expected Output**: Structured repo (`src/`, `Data/`, `results/`, `tests/`, `Documents/`) with documented plan.
+- **Expected Output**: Structured repo (`src/`, `Data/`, `results/`, `tests/`, `.planning/`) with documented plan.
 
 ### Phase 2: Data Extraction (Extract & Load) ✅
 - **Objective**: Ingest data from DummyJSON API.
@@ -267,7 +267,7 @@ cd src && python orchestrator.py          # full pipeline (requires AWS creds)
 | 2 | dbt project (staging, dim, fact, analytics) | `src/transformations/` | ✅ |
 | 3 | Populated DuckDB warehouse | `Data/warehouse/warehouse.duckdb` | ✅ |
 | 4 | pytest + dbt test suites | `tests/`, `schema.yml` | ✅ (7 pytest + 35 dbt) |
-| 5 | Architecture + revision guide | `Documents/revision.md` | ✅ |
+| 5 | Architecture + revision guide | `.planning/revision.md` | ✅ |
 | 6 | README + setup guide | `README.md` | ✅ |
 | 7 | SQL report queries | `src/sql/reports/` | ✅ |
 | 8 | Pipeline orchestrator | `src/orchestrator.py` | ✅ |
