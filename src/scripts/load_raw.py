@@ -2,15 +2,15 @@
 Module 4: Load raw JSON files into DuckDB staging tables.
 
 Workflow:
-  1. Scan data/raw/<entity>/YYYY/MM/DD/*.json recursively.
+  1. Scan Data/raw/<entity>/YYYY/MM/DD/*.json recursively.
   2. Use DuckDB's READ_JSON_AUTO to infer schema from each JSON file.
   3. Create staging tables (stg_customers, stg_products, stg_orders).
   4. Append data from all JSON files into the corresponding staging table.
   5. Log row counts and data quality metrics.
 
 Run:
-    python -m scripts.load_raw          (from repo root)
-    python scripts/load_raw.py
+    python -m scripts.load_raw          (from src/)
+    python src/scripts/load_raw.py
 """
 
 import json
@@ -21,13 +21,14 @@ from typing import Optional
 
 import duckdb
 
+from paths import DATA_RAW, DATA_WAREHOUSE, RESULTS_LOGS, WAREHOUSE_DB
+
 # ─────────────────────────────────────────────
 # PATHS & SETUP
 # ─────────────────────────────────────────────
-REPO_ROOT = pathlib.Path(__file__).parents[1]
-DATA_RAW_ROOT = REPO_ROOT / "data" / "raw"
-DATA_WAREHOUSE_ROOT = REPO_ROOT / "data" / "warehouse"
-LOG_PATH = REPO_ROOT / "logs" / "load_raw.log"
+DATA_RAW_ROOT = DATA_RAW
+DATA_WAREHOUSE_ROOT = DATA_WAREHOUSE
+LOG_PATH = RESULTS_LOGS / "load_raw.log"
 
 # Create necessary directories
 DATA_WAREHOUSE_ROOT.mkdir(parents=True, exist_ok=True)
@@ -49,7 +50,7 @@ logger = logging.getLogger(__name__)
 # ─────────────────────────────────────────────
 # DATABASE CONNECTION
 # ─────────────────────────────────────────────
-DB_PATH = DATA_WAREHOUSE_ROOT / "warehouse.duckdb"
+DB_PATH = WAREHOUSE_DB
 
 
 def get_db_connection() -> duckdb.DuckDBPyConnection:

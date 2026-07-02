@@ -14,16 +14,30 @@ ecommerce_elt:
     # Development environment
     dev:
       type: duckdb
-      path: '../data/warehouse/warehouse.duckdb'
+      path: '../../Data/warehouse/warehouse.duckdb'
       threads: 4
       timeout_seconds: 30
       
     # Production environment  
     prod:
       type: duckdb
-      path: '../data/warehouse/warehouse.duckdb'
+      path: '../../Data/warehouse/warehouse.duckdb'
       threads: 4
       timeout_seconds: 30
   
   # Default target to use
+  target: dev
+
+duckdb_local:
+  outputs:
+    dev:
+      type: duckdb
+      path: '../../Data/warehouse/warehouse.duckdb'
+      threads: 4
+      timeout_seconds: 30
+    prod:
+      type: duckdb
+      path: '../../Data/warehouse/warehouse.duckdb'
+      threads: 4
+      timeout_seconds: 30
   target: dev
