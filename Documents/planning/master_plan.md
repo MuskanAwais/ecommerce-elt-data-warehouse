@@ -176,9 +176,9 @@ Each module maps to the SDD in `Documents/planning/SDD_ECommerce_ELT.md`. Status
 | Item | Detail |
 |---|---|
 | **Goal** | Single source of truth for contributors and evaluators. |
-| **Deliverables** | `README.md`, `Documents/README.md`, `Documents/architecture.md`, `Documents/planning/master_plan.md`, `CONTRIBUTING.md` |
-| **Expected Output** | GitHub README renders; architecture diagram shows ELT flow; setup guide matches current `src/` paths. |
-| **Verify** | Review `README.md`, `Documents/architecture.md`, and `Documents/planning/master_plan.md`. |
+| **Deliverables** | `README.md`, `Documents/revision.md`, `Documents/planning/master_plan.md`, `CONTRIBUTING.md` |
+| **Expected Output** | GitHub README renders; revision guide covers architecture, workflow, and expected pipeline output. |
+| **Verify** | Review `README.md` and `Documents/revision.md`. |
 | **Status** | ✅ Complete |
 
 ### Module 9 — GitHub Finalization ✅
@@ -267,8 +267,8 @@ cd src && python orchestrator.py          # full pipeline (requires AWS creds)
 | 2 | dbt project (staging, dim, fact, analytics) | `src/transformations/` | ✅ |
 | 3 | Populated DuckDB warehouse | `Data/warehouse/warehouse.duckdb` | ✅ |
 | 4 | pytest + dbt test suites | `tests/`, `schema.yml` | ✅ (7 pytest + 35 dbt) |
-| 5 | Architecture diagram | `Documents/architecture.md` | ✅ |
-| 6 | README + setup guide | `README.md`, `Documents/README.md` | ✅ |
+| 5 | Architecture + revision guide | `Documents/revision.md` | ✅ |
+| 6 | README + setup guide | `README.md` | ✅ |
 | 7 | SQL report queries | `src/sql/reports/` | ✅ |
 | 8 | Pipeline orchestrator | `src/orchestrator.py` | ✅ |
 | 9 | GitHub templates + CONTRIBUTING | `.github/`, `CONTRIBUTING.md` | ✅ |

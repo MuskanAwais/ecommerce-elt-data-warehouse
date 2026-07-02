@@ -1,47 +1,60 @@
-# ecommerce-elt-data-warehouse
+# E-Commerce ELT Data Warehouse
 
-Python ELT pipeline for ecommerce analytics: API extraction, DuckDB warehouse, and dbt transformations.
+End-to-end **ELT pipeline** for e-commerce analytics: extract from DummyJSON, store in AWS S3, load into DuckDB, transform with dbt, and generate business KPIs.
 
-## Project layout
+## Tech Stack
+
+Python · DuckDB · dbt · AWS S3 · DummyJSON API
+
+## Project Structure
 
 ```
-ecommerce-elt-data-warehouse/
-├── src/              # Application source code (Python, dbt, SQL)
-├── Data/             # Raw, processed, and warehouse data files
-├── results/          # Pipeline outputs (dbt artifacts, logs)
-├── tests/            # Pytest suite
-├── Documents/        # Project documentation (.md, specs, guides)
-├── config/           # dbt profiles and environment config
-├── requirements.txt
-└── pytest.ini
+├── src/                      # Source code (extraction, dbt, scripts)
+├── Data/                     # Raw JSON + DuckDB warehouse (local, gitignored)
+├── results/                  # Pipeline logs and dbt artifacts (gitignored)
+├── tests/                    # pytest suite
+├── Documents/                # Documentation and planning specs
+├── orchestration_pipeline.py # Run the full pipeline with one command
+├── config/profiles.yml       # dbt DuckDB connection
+└── run_dbt.ps1               # dbt helper script
 ```
 
-Full setup instructions and architecture notes are in [Documents/README.md](Documents/README.md) and [Documents/architecture.md](Documents/architecture.md).
+## Quick Start
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for development workflow and coding standards.
+```powershell
+git clone https://github.com/MuskanAwais/ecommerce-elt-data-warehouse.git
+cd ecommerce-elt-data-warehouse
 
-## Quick start
-
-```bash
 python -m venv .venv
-.venv\Scripts\activate
+.\.venv\Scripts\Activate.ps1
 pip install -r requirements.txt
-
-# Run the complete ELT pipeline (one command)
-python orchestration_pipeline.py
-
-# Extract raw data (manual)
-cd src && python -m extraction.extractor
-cd src && python -m scripts.load_raw
-
-# Run dbt models (works from repo root — cwd is restored after each run)
-.\run_dbt.ps1 run
-
-# Run tests
-.\run_dbt.ps1 test
-pytest
 ```
+
+Create a `.env` file at the repo root with your AWS credentials (see [Documents/revision.md](Documents/revision.md#environment-variables)).
+
+### Run the full pipeline
+
+```powershell
+python orchestration_pipeline.py
+```
+
+This executes: **API extract → S3 upload → DuckDB load → dbt transform → dbt test → analytics report**.
+
+### Run tests
+
+```powershell
+pytest
+.\run_dbt.ps1 test
+```
+
+## Documentation
+
+| Document | Description |
+|---|---|
+| [Documents/revision.md](Documents/revision.md) | Full guide: concepts, architecture, workflow, testing, expected output |
+| [Documents/planning/master_plan.md](Documents/planning/master_plan.md) | Module roadmap and completion tracker |
+| [CONTRIBUTING.md](CONTRIBUTING.md) | Development workflow and coding standards |
 
 ## License
 
-MIT License — see [Documents/README.md](Documents/README.md) for details.
+MIT License
