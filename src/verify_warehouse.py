@@ -1,6 +1,15 @@
 import duckdb
 
-conn = duckdb.connect('data/warehouse/warehouse.duckdb')
+import sys
+from pathlib import Path
+
+SRC_ROOT = Path(__file__).resolve().parent
+if str(SRC_ROOT) not in sys.path:
+    sys.path.insert(0, str(SRC_ROOT))
+
+from paths import WAREHOUSE_DB
+
+conn = duckdb.connect(str(WAREHOUSE_DB))
 
 print('=' * 60)
 print('DuckDB Warehouse Tables')
@@ -25,8 +34,7 @@ for table in ['stg_products', 'stg_orders', 'stg_customers']:
     try:
         count = conn.execute(f'SELECT COUNT(*) FROM {table}').fetchone()[0]
         print(f'\n{table}: {count} rows')
-        
-        # Show first row
+
         first_row = conn.execute(f'SELECT * FROM {table} LIMIT 1').fetchall()
         if first_row:
             print(f'  Sample: {first_row[0][:50]}...')
