@@ -3,7 +3,7 @@ Data extraction module for the E-Commerce ELT pipeline.
 
 Workflow (Modules 2, 3 & 4):
   1. Fetch raw JSON from each DummyJSON API endpoint.
-  2. Save a local copy to data/raw/<entity>/YYYY/MM/DD/ (used by load_raw.py).
+  2. Save a local copy to Data/raw/<entity>/YYYY/MM/DD/ (used by load_raw.py).
   3. Upload the same JSON to S3 under a date-partitioned key:
        s3://<bucket>/raw/<entity>/YYYY/MM/DD/<entity>_<timestamp>.json
 
@@ -12,27 +12,40 @@ and requires no real AWS credentials. Real credentials are added during
 the deployment phase only.
 
 Run:
-    python -m extraction.extractor      (from repo root)
-    python extraction/extractor.py
+    python -m extraction.extractor      (from src/)
+    python src/extraction/extractor.py
 """
 
+import requests
 import json
 import logging
 import datetime
+import os
 import pathlib
+import sys
 
 import boto3
-import requests
+import time
 from botocore.exceptions import BotoCoreError, ClientError
 
-from extraction.config import API_ENDPOINTS, S3_BUCKET_NAME
+SRC_ROOT = pathlib.Path(__file__).resolve().parents[1]
+if str(SRC_ROOT) not in sys.path:
+    sys.path.insert(0, str(SRC_ROOT))
+
+from paths import DATA_RAW, REPO_ROOT, RESULTS_LOGS
+from extraction.config import (
+    API_ENDPOINTS,
+    AWS_ACCESS_KEY_ID,
+    AWS_REGION,
+    AWS_SECRET_ACCESS_KEY,
+    S3_BUCKET_NAME,
+)
 
 # ─────────────────────────────────────────────
 # PATHS
 # ─────────────────────────────────────────────
-REPO_ROOT = pathlib.Path(__file__).parents[1]
-DATA_RAW_ROOT = REPO_ROOT / "data" / "raw"     # local raw layer
-LOG_PATH = REPO_ROOT / "logs" / "extraction.log"
+DATA_RAW_ROOT = DATA_RAW
+LOG_PATH = RESULTS_LOGS / "extraction.log"
 LOG_PATH.parent.mkdir(parents=True, exist_ok=True)
 
 # ─────────────────────────────────────────────
@@ -40,7 +53,7 @@ LOG_PATH.parent.mkdir(parents=True, exist_ok=True)
 # ─────────────────────────────────────────────
 logging.basicConfig(
     level=logging.INFO,
-    format="%(asctime)s %(levelname)-8s %(message)s",
+    format="%(message)s",
     handlers=[
         logging.FileHandler(LOG_PATH, encoding="utf-8"),
         logging.StreamHandler(),
@@ -69,23 +82,30 @@ def _fetch(entity: str, url: str) -> dict:
         requests.RequestException: Any other network-level error.
     """
     logger.info("[FETCH] %s → %s", entity, url)
-    try:
-        response = requests.get(url, timeout=30)
-        response.raise_for_status()
-        data = response.json()
-        # Count records inside the top-level key (e.g. payload["products"])
-        count = len(data.get(entity, [])) if isinstance(data, dict) else len(data)
-        logger.info("[FETCH] ✓ %s — %d records received", entity, count)
-        return data
-    except requests.Timeout:
-        logger.error("[FETCH] Timeout — %s", entity)
-        raise
-    except requests.HTTPError as exc:
-        logger.error("[FETCH] HTTP %s — %s", exc.response.status_code, entity)
-        raise
-    except requests.RequestException as exc:
-        logger.error("[FETCH] Network error — %s: %s", entity, exc)
-        raise
+    max_retries = 3
+    backoff = 5  # seconds
+    for attempt in range(1, max_retries + 1):
+        try:
+            response = requests.get(url, timeout=60)
+            response.raise_for_status()
+            data = response.json()
+            count = len(data.get(entity, [])) if isinstance(data, dict) else len(data)
+            logger.info("[FETCH] ✓ %s — %d records received (attempt %d)", entity, count, attempt)
+            return data
+        except requests.Timeout:
+            logger.warning("[FETCH] Timeout on attempt %d for %s", attempt, entity)
+            if attempt == max_retries:
+                logger.error("[FETCH] Timeout — %s", entity)
+                raise
+        except requests.HTTPError as exc:
+            logger.error("[FETCH] HTTP %s — %s (attempt %d)", exc.response.status_code, entity, attempt)
+            raise
+        except requests.RequestException as exc:
+            logger.warning("[FETCH] Network error on attempt %d for %s: %s", attempt, entity, exc)
+            if attempt == max_retries:
+                logger.error("[FETCH] Network error — %s: %s", entity, exc)
+                raise
+        time.sleep(backoff * attempt)
 
 
 # ─────────────────────────────────────────────
@@ -96,7 +116,7 @@ def _save_local(entity: str, payload: dict) -> pathlib.Path:
     Write the JSON payload to a local date-partitioned file.
 
     Path format:
-        data/raw/<entity>/YYYY/MM/DD/<entity>_YYYYMMDD_HHMMSS.json
+        Data/raw/<entity>/YYYY/MM/DD/<entity>_YYYYMMDD_HHMMSS.json
 
     This local copy is what load_raw.py reads to build DuckDB staging
     tables — no real AWS credentials required.
@@ -155,7 +175,12 @@ def _upload_to_s3(entity: str, payload: dict) -> str:
     s3_key    = f"raw/{entity}/{date_path}/{entity}_{timestamp}.json"
     json_body = json.dumps(payload, ensure_ascii=False, indent=2)
 
-    s3_client = boto3.client("s3")
+    s3_client = boto3.client(
+        "s3",
+        region_name=AWS_REGION,
+        aws_access_key_id=AWS_ACCESS_KEY_ID or None,
+        aws_secret_access_key=AWS_SECRET_ACCESS_KEY or None,
+    )
 
     logger.info("[S3]     Uploading → s3://%s/%s", S3_BUCKET_NAME, s3_key)
     try:
@@ -189,7 +214,7 @@ def main() -> None:
     """
     Run the full extraction pipeline for every configured API endpoint:
       1. Fetch JSON from DummyJSON.
-      2. Save a local copy to data/raw/ (for DuckDB loading).
+      2. Save a local copy to Data/raw/ (for DuckDB loading).
       3. Upload to S3 (intercepted by Moto in tests).
 
     Failures are logged and the pipeline continues with the next entity.

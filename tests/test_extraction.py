@@ -1,3 +1,4 @@
+import importlib
 import json
 import pytest
 import boto3
@@ -5,6 +6,18 @@ from moto import mock_aws
 
 from extraction import extractor
 from extraction.config import S3_BUCKET_NAME
+
+
+def test_config_reads_s3_settings_from_environment(monkeypatch):
+    monkeypatch.setenv("S3_BUCKET_NAME", "env-bucket")
+    monkeypatch.setenv("AWS_REGION", "eu-west-1")
+
+    import extraction.config as config
+
+    config = importlib.reload(config)
+
+    assert config.S3_BUCKET_NAME == "env-bucket"
+    assert config.AWS_REGION == "eu-west-1"
 
 @mock_aws
 def test_extraction_uploads_to_s3():
