@@ -23,6 +23,8 @@ env/
 results/**
 !results/logs/
 !results/logs/.gitkeep
+!results/dbt/
+!results/dbt/.gitkeep
 
 # Jupyter notebooks
 *.ipynb
